@@ -5,13 +5,9 @@ import numpy as np
 
 df = pd.read_csv("data\\dataset\\dataset.csv")
 
-# Convert 'date' column to datetime format
+# 'date' as indice
 df["date"] = pd.to_datetime(df["date"])
-
-# Set 'date' as the index for time series analysis
 df.set_index("date", inplace=True)
-
-# Sort the index by date
 df = df.sort_index()
 
 # Define the target variable (Venta_piezas) and exogenous variables
@@ -56,14 +52,14 @@ print(f"Mean Absolute Error (MAE): {mae:.2f}")
 print(f"Root Mean Squared Error (RMSE): {rmse:.2f}")
 print(f"Mean Absolute Percentage Error (MAPE): {mape:.2f}%")
 
-# Extend exogenous variables for 52 weeks (use zeros, averages, or realistic future estimates)
+# Extend exogenous variables for 52 weeks
 future_exog = pd.DataFrame(
     {
-        "Promocion": [0] * 52,  # Example: assume no promotion in future
-        "EventoEspecial_Venta_piezas": [0] * 52,  # Example: no special events
-        "holiday": [0] * 52,  # Example: assume no holidays
+        "Promocion": [0] * 52,  
+        "EventoEspecial_Venta_piezas": [0] * 52,  
+        "holiday": [0] * 52,  
         "porcentaje_gasto_alimentos": [47]
-        * 52,  # Use average value or last known percentage
+        * 52,  
     },
     index=pd.date_range(
         start=df.index[-1] + pd.Timedelta(weeks=1), periods=52, freq="W"
